@@ -4,7 +4,7 @@ A genetic algorithm to simulate bee swarm and attack behavior
 
 # here are the rules of the simulation
 
-1.) Random populations of these bees are created and grouped together these groups are known as swarms.
+1.) Random populations of these bees are created and grouped together these groups are known as swarms.\n
 2.) Bees will not attack other bees that are part of their respective swarm.
 3.) Bees have 2 modes that they can switch between defending and attacking
 4.) A bee will enter attack mode if it is proximity to another non related bee or senses a signal from a related bee to swarm against an enemy bee.
