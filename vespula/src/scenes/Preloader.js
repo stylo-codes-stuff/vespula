@@ -28,8 +28,19 @@ export class Preloader extends Scene
     }
 
     preload ()
-    {
-        this.load.image('bee','../assets/bee.png')
+    {        
+        //preload images
+        this.load.image('flower','assets/flower.png')
+        this.load.image('bee2','assets/bee.png')
+        this.load.image('crown','assets/crown.png')
+        //preload and configure spritesheets
+        this.load.spritesheet('drone', '../assets/spritesheets/drone.png', {
+            frameWidth: 31, // Each frame is 64 pixels wide
+            frameHeight: 31, // Each frame is 64 pixels high
+            });
+
+
+
     }
 
     create ()
@@ -37,9 +48,28 @@ export class Preloader extends Scene
         //  When all the assets have loaded, it's often worth creating global objects here that the rest of the game can use.
         //  For example, we will define our 'coin' animation here, so we can use it in other scenes:
 
-
+        const flight = {
+            key: 'flight', // Unique key for the animation
+            frames: this.anims.generateFrameNumbers('drone', {
+                start: 0,
+                end: 2,
+            }),
+            frameRate: 30, // 20 frames per second
+            repeat: -1 // Loop indefinitely
+        };
+        const ground = {
+            key: 'ground', // Unique key for the animation
+            frames: this.anims.generateFrameNumbers('drone', {
+                start: 2,
+                end: 2,
+            }),
+            frameRate: 30, // 20 frames per second
+            repeat: -1 // Loop indefinitely
+        };
+        this.anims.create(flight);
+        this.anims.create(ground)
         this.scene.transition({
-            target: 'mainmenu',
+            target: 'hive',
             duration: 1000,
             moveBelow: true,
             onUpdate: (progress) => {
