@@ -1,4 +1,4 @@
-import {toRadians} from './functions.js'
+import {toRadians,distance} from './functions.js'
 
 // utility functions for moving sprites 
 
@@ -18,4 +18,13 @@ export function turn(sprite,degrees){
 //moves a sprite forward an amount of steps/pixels 
 export function move(sprite,steps){
     sprite.setPosition(sprite.x + Math.cos(toRadians(sprite.angle)) * steps,sprite.y+ Math.sin(toRadians(sprite.angle)) * steps)
+}
+
+export function isNear(sprite,target,threshold){
+    
+    if (distance(sprite,target) <= threshold){
+        return true;
+    }else{
+        return false;
+    }
 }

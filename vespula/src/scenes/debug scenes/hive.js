@@ -6,35 +6,36 @@ import {
     minmax_randomInt,
     distance,
     getDir
-} from '../functions.js';
+} from '../../utilities/functions.js';
 import {
     loc,
     move,
     isNear
-} from '../movefuncs.js'
+} from '../../utilities/movefuncs.js'
 import {
     pheremone
-} from '../classes.js';
-
+} from '../../utilities/classes.js';
 export class hive extends Phaser.Scene {
     constructor() {
         super('hive');
     }
-
-
     create() {
-        var beecount = 1
+        var beecount = 20
         this.graphics = this.add.graphics();
         this.labels = false;
         this.pause = true;
         this.bees = [];
         this.nectar = [];
+        this.honey = [];
         this.flowers = [];
         this.pheremones = [];
         this.labelswitch = this.add.text(30, 30, 'Click to enable and disable labels').setInteractive();
         this.pause_button = this.add.text(30, 50, 'Click to pause the simulation').setInteractive();
+        this.fpsframes = 0
+        this.elapsed = 0
         this.frames = 0
         this.frameCounter = this.add.text(30, 70, 'Frames: 0')
+        this.fps = this.add.text(160,70,`FPS: 0`)
         const {
             centerX,
             centerY
@@ -97,7 +98,7 @@ export class hive extends Phaser.Scene {
             bee.suck_time = 2000
             bee.colony = 1
             bee.flee = false
-            bee.speed = 1
+            bee.speed = 5
             this.bees.push(bee)
 
         }
@@ -132,7 +133,7 @@ export class hive extends Phaser.Scene {
             bee.gender = 'female'
             bee.nectar_limit = 10
             bee.colony = 2
-            bee.speed = 1
+            bee.speed = 5
             //amount of frames spent drinking nectar
             bee.suck_time = 2000;
             bee.flee = false
@@ -140,8 +141,8 @@ export class hive extends Phaser.Scene {
         }
         this.labelswitch.on('pointerup', () => {
             this.labels = !this.labels
-            //get and destroy all text objects so they can be updated except the label switch
-            let allTextObjects = this.children.list.filter(gameObject => gameObject instanceof Phaser.GameObjects.Text && gameObject != this.labelswitch && gameObject != this.pause_button && gameObject != this.frameCounter);
+            //get and destroy all text objects so they can be updated except ones used in debugging
+            let allTextObjects = this.children.list.filter(gameObject => gameObject instanceof Phaser.GameObjects.Text && gameObject != this.labelswitch && gameObject != this.pause_button && gameObject != this.frameCounter && gameObject != this.fps);
 
             allTextObjects.forEach(textObject => {
                 textObject.destroy();
@@ -152,7 +153,15 @@ export class hive extends Phaser.Scene {
         })
     }
 
-    update() {
+    update(t,dt) {
+
+        this.elapsed += dt
+        if(this.elapsed/1000 > 1){
+            this.fps.text = `FPS: ${Math.trunc(this.fpsframes/(this.elapsed/1000))}`
+
+            this.fpsframes = 0
+            this.elapsed = 0
+        }
         //move queen markers to where the queens are
         this.crown1.x = this.queen1.x
         this.crown1.y = this.queen1.y - 30
@@ -166,7 +175,7 @@ export class hive extends Phaser.Scene {
         //check if labels are enabled
         if (this.labels == true) {
             //get and destroy all text objects so they can be updated except the label switch
-            let allTextObjects = this.children.list.filter(gameObject => gameObject instanceof Phaser.GameObjects.Text && gameObject != this.labelswitch && gameObject != this.pause_button && gameObject != this.frameCounter);
+            let allTextObjects = this.children.list.filter(gameObject => gameObject instanceof Phaser.GameObjects.Text && gameObject != this.labelswitch && gameObject != this.pause_button && gameObject != this.frameCounter && gameObject != this.fps);
 
             allTextObjects.forEach(textObject => {
                 textObject.destroy();
@@ -244,9 +253,8 @@ export class hive extends Phaser.Scene {
                             //keep bees from running out of flowers to revisit
                             if (bee.flowersVisited.length >= 5) {
                                 bee.flowersVisited.pop()
-                                console.log(bee.flowersVisited)
                             }
-                            bee.framesToWait = 100
+                            bee.framesToWait = 1
                             bee.nectar += 1
                             bee.target.nectar_content -= 1;
                             bee.flowersVisited.push(bee.target)
@@ -258,7 +266,7 @@ export class hive extends Phaser.Scene {
                         if (bee.target == this.queen1 || bee.target == this.queen2) {
                             if (bee.full == true) {
                                 //simulate bees dropping off nectar
-                                bee.framesToWait = 50
+                                bee.framesToWait = 1
                                 bee.speed = 0
                                 var nectar = this.add.sprite(bee.x, bee.y, 'nectar')
                                 nectar.amount = bee.nectar
@@ -274,36 +282,53 @@ export class hive extends Phaser.Scene {
                 //pathfinding behavior for females
                 //for now they just swarm around the queen if they run out of nectar to convert
                 if (bee.gender == 'female') {
-                    //if there is nectar that belongs to the colony find it and turn it into honey
+                                        //if there is nectar that belongs to the colony find it and turn it into honey
+                                        
                     if (this.nectar.length > 0) {
-                        console.log('nectar!!!')
                         //filter nectar that doesn't belong to the workers colony
                         var owned = this.nectar.filter((drop) => drop.ownedBy == bee.colony)
-                        //stop looking for nectar if there is non that the colony owns
-                        if (owned.length == 0) {
+                        //if the colony owns nectar go and turn it into honey
+                        if (owned.length != 0) {
                             bee.target = owned[0]
                         }
-                    } else {
-                        if (bee.colony == 1 && bee.target.texture) {
+                    }
+                    if(this.nectar.length == 0){
+                        if (bee.colony == 1) {
                             bee.target = this.queen1;
                         }
                         if (bee.colony == 2) {
                             bee.target = this.queen2
                         }
                     }
+                    //behaviors to perform when near specific targets
+                    if(isNear(bee,bee.target,100)){
+                        
+                        if(bee.target.texture.key == 'nectar'){
+                            console.log('honey!')
+                            var honey = this.add.sprite(bee.target.x,bee.target.y,'honey')
+                            honey.ownedBy = bee.colony
+                            honey.amount = bee.target.amount;
+                            this.honey.push(honey)
+                            this.nectar = this.nectar.filter((drop) => drop == bee.target) // 2nd parameter means remove one item only
 
+                            bee.target.destroy()
+                        }
+                    }
                 }
+                
             }
             //move bee toward target
             this.bees.forEach(bee => {
                 var beeloc = loc(bee)
                 bee.angle -= 1
-                console.log(bee.gender)
                 var dir = getDir(beeloc, bee.target, bee.angle)
+                if(dir == 'straight'){
+                    return;
+                }
                 if (dir == 'left') {
-                    bee.angle -= minmax_randomInt(-1, 10)
+                    bee.angle -= 3
                 } else if (dir == 'right') {
-                    bee.angle += minmax_randomInt(-1, 10)
+                    bee.angle += 3
                 }
                 //move bee 5 steps forward
                 move(bee, bee.speed)
@@ -324,6 +349,6 @@ export class hive extends Phaser.Scene {
         }
 
 
-
+        this.fpsframes++
     }
 }
