@@ -33,6 +33,8 @@ export class Preloader extends Scene
         this.load.image('flower','assets/flower.png')
         this.load.image('bee2','assets/bee.png')
         this.load.image('crown','assets/crown.png')
+        this.load.image('honey','assets/honey.png')
+        this.load.image('nectar','assets/nectar.png')
         //preload and configure spritesheets
         this.load.spritesheet('drone', '../assets/spritesheets/drone.png', {
             frameWidth: 31, // Each frame is 64 pixels wide

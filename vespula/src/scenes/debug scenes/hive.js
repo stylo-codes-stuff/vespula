@@ -203,12 +203,12 @@ export class hive extends Phaser.Scene {
         //determine movement for each bee respective to their type
         if (this.pause == false) {
             this.frames += 1
-
             //get target for each bee wether its a flower or the hive
             for (let index in this.bees) {
                 var bee = this.bees[index];
                 //pathfinding behavior for drones
-                //NOTE: if a bee doesnt have a target it will raise an error pointing at the loc function
+                //NOTE: if a 
+                //  doesnt have a target it will raise an error pointing at the loc function
                 if (bee.gender == 'drone') {
                     if (bee.framesToWait > 0) {
                         bee.framesToWait -= 1
@@ -289,6 +289,8 @@ export class hive extends Phaser.Scene {
                         var owned = this.nectar.filter((drop) => drop.ownedBy == bee.colony)
                         //if the colony owns nectar go and turn it into honey
                         if (owned.length != 0) {
+                            //get the nearest honey object
+                            
                             bee.target = owned[0]
                         }
                     }
@@ -304,13 +306,12 @@ export class hive extends Phaser.Scene {
                     if(isNear(bee,bee.target,100)){
                         
                         if(bee.target.texture.key == 'nectar'){
-                            console.log('honey!')
                             var honey = this.add.sprite(bee.target.x,bee.target.y,'honey')
                             honey.ownedBy = bee.colony
                             honey.amount = bee.target.amount;
                             this.honey.push(honey)
-                            this.nectar = this.nectar.filter((drop) => drop == bee.target) // 2nd parameter means remove one item only
-
+                            console.log(this.nectar.indexOf(bee.target))
+                            this.nectar = this.nectar.filter((drop) => drop != bee.target) // 2nd parameter means remove one item only
                             bee.target.destroy()
                         }
                     }
