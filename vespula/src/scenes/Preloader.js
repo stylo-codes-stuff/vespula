@@ -71,7 +71,7 @@ export class Preloader extends Scene
         this.anims.create(flight);
         this.anims.create(ground)
         this.scene.transition({
-            target: 'hive',
+            target: 'hive2',
             duration: 1000,
             moveBelow: true,
             onUpdate: (progress) => {

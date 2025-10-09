@@ -6,6 +6,7 @@ import { debugmenu } from "./scenes/debug";
 import { Game } from "phaser";
 import { orbit } from "./scenes/debug scenes/orbit";
 import { hive } from "./scenes/debug scenes/hive";
+import { hive2 } from "./scenes/debug scenes/hive2";
 //  Find out more information about the Game Config at: https://newdocs.phaser.io/docs/3.70.0/Phaser.Types.Core.GameConfig
 const config = {
     type: Phaser.AUTO,
@@ -29,7 +30,8 @@ const config = {
         mainmenu,
         debugmenu,
         orbit,
-        hive
+        hive,
+        hive2
     ]
 };
 

@@ -14,9 +14,17 @@ export class pheremone{
         this.mode = mode
     }
 }
-class bee{
-    constructor(dna){
-        
-        
+
+
+//fingers crossed this class extension won't cause any weird and wacky edge cases!
+export class bee extends Phaser.GameObjects.Sprite{
+  constructor(scene, x, y, texture) {
+    // Call the parent constructor
+    super(scene, x, y, texture);
+
+    // Add the sprite to the scene's display and update lists
+    scene.add.existing(this);
+
+
     }
 }

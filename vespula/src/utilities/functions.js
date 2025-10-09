@@ -67,15 +67,7 @@ export function getDir(bee,target, currentHeadingDegrees) {
         return "straight";
     }
 }
-export function minmax_randomInt(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
 
-export function random_choice(list){
-    return list[minmax_randomInt(0,list.length-1)]
-}
 //takes two strings or decimal ints that represent genetic information and performs crossover based on the type of inheritance
 export function crossover(dna1,dna2,type=null){
     

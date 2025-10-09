@@ -1,5 +1,6 @@
 //test scene for how swarms hover around the group center
-import {toRadians,getDir,minmax_randomInt} from '../../utilities/functions.js';
+import {toRadians,getDir} from '../../utilities/functions.js';
+import { minmax_randomInt } from '../../utilities/random.js';
 import {loc,move} from '../../utilities/movefuncs.js'
 export class orbit extends Phaser.Scene {
     constructor() {
