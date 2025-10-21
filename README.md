@@ -1,2 +1,2 @@
-# vespula
-A genetic algorithm to simulate bee swarm and attack behavior
+# Vespula: A Eusocialilty simulation about bees
+A project i've been working on for fun with complex rules that simulate how colonies of bees function.
