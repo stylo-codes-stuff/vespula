@@ -276,7 +276,7 @@ export class hive extends Phaser.Scene {
                             if (bee.flowersVisited.length >= 5) {
                                 bee.flowersVisited.pop()
                             }
-                            bee.framesToWait = 1
+                            bee.framesToWait = 300
                             bee.nectar += 1
                             bee.target.nectar_content -= 1;
                             bee.flowersVisited.push(bee.target)
@@ -288,7 +288,7 @@ export class hive extends Phaser.Scene {
                         if (bee.target == this.queen1 || bee.target == this.queen2) {
                             if (bee.full == true) {
                                 //simulate bees dropping off nectar
-                                bee.framesToWait = 1
+                                bee.framesToWait = 300
                                 bee.speed = 0
                                 var nectar = this.add.sprite(bee.x, bee.y, 'nectar')
                                 nectar.amount = bee.nectar

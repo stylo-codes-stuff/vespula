@@ -28,28 +28,28 @@ export class Preloader extends Scene
     }
 
     preload ()
-    {        
+    {    
+        //initalize registry values
+        this.registry.set('colonies',[])
         //preload images
-        this.load.image('flower','assets/flower.png')
-        this.load.image('bee2','assets/bee.png')
+        this.load.image('whiteflower','assets/whiteflower.png')
+        this.load.image('redflower','assets/')
+        this.load.image('bee','assets/bee.png')
         this.load.image('crown','assets/crown.png')
         this.load.image('honey','assets/honey.png')
         this.load.image('nectar','assets/nectar.png')
         //preload and configure spritesheets
         this.load.spritesheet('drone', '../assets/spritesheets/drone.png', {
-            frameWidth: 31, // Each frame is 64 pixels wide
-            frameHeight: 31, // Each frame is 64 pixels high
+            frameWidth: 31, // Each frame is 31 pixels wide
+            frameHeight: 31, // Each frame is 31 pixels high
             });
-
+        
 
 
     }
 
     create ()
     {
-        //  When all the assets have loaded, it's often worth creating global objects here that the rest of the game can use.
-        //  For example, we will define our 'coin' animation here, so we can use it in other scenes:
-
         const flight = {
             key: 'flight', // Unique key for the animation
             frames: this.anims.generateFrameNumbers('drone', {
