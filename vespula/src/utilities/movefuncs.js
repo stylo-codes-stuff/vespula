@@ -3,6 +3,8 @@ import { toRadians, distance } from './functions.js'
 // utility functions for moving sprites 
 
 //returns a sprites coords in an object for code reduction and readability
+//would remove due to having methods for it in the bee class
+// but its hard coded into a few random functions
 export function loc(sprite) {
     return { x: sprite.x, y: sprite.y }
 }

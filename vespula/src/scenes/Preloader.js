@@ -33,16 +33,20 @@ export class Preloader extends Scene
         this.registry.set('colonies',[])
         //preload images
         this.load.image('whiteflower','assets/whiteflower.png')
-        this.load.image('redflower','assets/')
         this.load.image('bee','assets/bee.png')
         this.load.image('crown','assets/crown.png')
         this.load.image('honey','assets/honey.png')
         this.load.image('nectar','assets/nectar.png')
+        this.load.image('pmarker','assets/marker.png')
         //preload and configure spritesheets
         this.load.spritesheet('drone', '../assets/spritesheets/drone.png', {
             frameWidth: 31, // Each frame is 31 pixels wide
             frameHeight: 31, // Each frame is 31 pixels high
             });
+        this.load.spritesheet('worker','../assets/spritesheets/worker.png',{
+            frameWidth:31,
+            frameHeight:31,
+        });
         
 
 

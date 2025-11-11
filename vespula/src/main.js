@@ -2,6 +2,7 @@ import { Boot } from "./scenes/Boot";
 import { mainmenu } from "./scenes/mainmenu";
 import { Preloader } from "./scenes/Preloader";
 import { template } from "./scenes/template";
+import { expand } from "./scenes/debug scenes/expand";
 import { debugmenu } from "./scenes/debug";
 import { Game } from "phaser";
 import { orbit } from "./scenes/debug scenes/orbit";
@@ -31,7 +32,8 @@ const config = {
         debugmenu,
         orbit,
         hive,
-        hive2
+        hive2,
+        expand
     ]
 };
 

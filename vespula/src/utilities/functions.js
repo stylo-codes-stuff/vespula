@@ -1,6 +1,12 @@
 //utility functions
 import {loc} from './movefuncs.js';
 
+
+export function countSharedElements(arr1, arr2) {
+  const sharedElements = arr1.filter(element => arr2.includes(element));
+  return sharedElements.length;
+}
+
 export function toRadians(degrees){
 
     return degrees * (Math.PI / 180)
@@ -69,7 +75,7 @@ export function getDir(bee,target, currentHeadingDegrees) {
 }
 
 //takes two strings or decimal ints that represent genetic information and performs crossover based on the type of inheritance
-export function crossover(dna1,dna2,type=null){
+export function crossover(dna1,dna2,chunks){
     
     
 }

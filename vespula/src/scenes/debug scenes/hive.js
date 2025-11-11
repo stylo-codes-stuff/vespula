@@ -11,7 +11,7 @@ import {
     isNear
 } from '../../utilities/movefuncs.js'
 import {
-    pheremone
+    pheromone
 } from '../../utilities/classes.js';
 import { 
     minmax_randomInt 
@@ -29,7 +29,7 @@ export class hive extends Phaser.Scene {
         this.nectar = [];
         this.honey = [];
         this.flowers = [];
-        this.pheremones = [];
+        this.pheromones = [];
         this.labelswitch = this.add.text(30, 30, 'Click to enable and disable labels').setInteractive();
         this.pause_button = this.add.text(30, 50, 'Click to pause the simulation').setInteractive();
         this.fpsframes = 0
@@ -64,7 +64,7 @@ export class hive extends Phaser.Scene {
         for (var i = 0; i < 40; i++) {
             var randx = minmax_randomInt(200, width - 200)
             var randy = minmax_randomInt(200, height - 200)
-            var flower = this.add.sprite(randx, randy, 'flower')
+            var flower = this.add.sprite(randx, randy, 'whiteflower')
             flower.debug_label = this.add.text(flower.x,flower.y,'').setOrigin()
             flower.nectar_content = minmax_randomInt(0, 20);
             this.flowers.push(flower)

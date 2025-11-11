@@ -3,15 +3,18 @@ import { minmax_randomInt } from "./random"
 
 
 
-var flower_keys = []
 //class for pheremone data
-export class pheremone{
+export class pheromone extends Phaser.GameObjects.Sprite{
     
     
-    constructor(x,y,time,type){
+    constructor(scene,x,y,time,type,visible=true){
+                
+        // Call the parent constructor
+        super(scene, x, y, 'pmaker');
+        //define custom props
         this.x = x
         this.y = y
-        //the amount of frames this pheremone stays active
+        //the amount of frames this pheromone stays active
         this.time = time
         //can be either avoided or targeted
         this.type = type
@@ -45,10 +48,10 @@ export class colony{
     }
     randomly_populate(scene,x,y,males,females){
         for(var i = 0; i <males;i++){
-            this.bees.push(new bee(scene,x,y,'drone','drone',minmax_randomInt(10,20),minmax_randomInt(10,20),minmax_randomInt(5,20),minmax_randomInt(1000,5000),minmax_randomInt(5,20)))
+            this.bees.push(new bee(scene,x,y,'drone',minmax_randomInt(10,20),minmax_randomInt(10,20),minmax_randomInt(5,20),minmax_randomInt(1000,5000),minmax_randomInt(5,10)))
         }
         for(var i = 0; i <females;i++){
-            this.bees.push(new bee(scene,x,y,'drone','worker',minmax_randomInt(10,20),minmax_randomInt(10,20),minmax_randomInt(5,20),minmax_randomInt(1000,5000),minmax_randomInt(5,20)))
+            this.bees.push(new bee(scene,x,y,'worker',minmax_randomInt(10,20),minmax_randomInt(10,20),minmax_randomInt(5,20),minmax_randomInt(1000,5000),minmax_randomInt(5,10)))
         }
     }
     scatter(offsetmin,offsetmax){
@@ -60,9 +63,10 @@ export class colony{
 }
 //fingers crossed this class extension won't cause any weird and wacky edge cases!
 export class bee extends Phaser.GameObjects.Sprite{
-    constructor(scene, x, y, texture,gender,smell_distance,flee_distance,nectar_limit,suck_time,speed) {
+    constructor(scene, x, y,gender,smell_distance,sight_distance,nectar_limit,suck_time,speed) {
+        
         // Call the parent constructor
-        super(scene, x, y, texture);
+        super(scene, x, y, gender);
         //add custom properties
         
         //predef props
@@ -76,7 +80,7 @@ export class bee extends Phaser.GameObjects.Sprite{
         //custom props  
         this.gender = gender;
         this.smell_distance = smell_distance
-        this.flee_distance = flee_distance;
+        this.sight_distance = sight_distance;
         this.nectar_limit = nectar_limit;
         this.suck_time = suck_time;
         this.speed = speed

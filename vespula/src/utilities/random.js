@@ -9,7 +9,11 @@ export function random_choice(list){
 }
 //randomly picks a specified amount of elements from a list
 export function return_random_elements(list,amount){
-    
+    var items = [];
+    for (var i = 0;i<amount;i++){
+      items.push(random_choice(list))
+    }
+    return items;
 }
 export function weighted_choice(list){
 
