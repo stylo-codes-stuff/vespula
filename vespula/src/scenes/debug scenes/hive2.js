@@ -17,7 +17,7 @@ export class hive2 extends Scene {
         const { height, width } = this.scale;
         this.colonies = [];
         this.bees = [];
-        this.pheremones = [];
+        this.pheromones = [];
         this.average_colony_hungers = {};
         this.fpsframes = 0;
         this.elapsed = 0;
@@ -31,7 +31,7 @@ export class hive2 extends Scene {
         this.colony2 = new colony(2, queen2)
 
         //randomly populate colonies
-        this.colony1.randomly_populate(this, 0, 0, 20, 200)
+        this.colony1.randomly_populate(this, 0, 0, 20, 20)
 
         this.colony1.scatter(0, 1000)
         this.colony2.randomly_populate(this, 0, 0, 20, 20)
@@ -58,12 +58,23 @@ export class hive2 extends Scene {
         });
 
 
-        //create debug sprites here
+        //debugging for pheromones
         var test_alarm = new pheromone(this, centerX, centerY, 1000, 'alarm')
-        this.pheremones.push(test_alarm)
+        this.pheromones.push(test_alarm)
+
     }
     update(t, dt) {
 
+        //pheromone cleanup loop that deletes any destroyed pheromone markers from the tracking list
+        //this is due to destroy not deleting ALL instances
+        this.pheromones= this.pheromones.filter(sprite => {
+            if (sprite.active) { // Check if the sprite is still active (not destroyed)
+                return true;
+            } else {
+                // If not active, it's likely destroyed, so remove it from the list
+                return false;
+            }
+        });
         //fps counter
         this.elapsed += dt
         if (this.elapsed / 1000 > 1) {
@@ -73,38 +84,59 @@ export class hive2 extends Scene {
             this.elapsed = 0
         }
         this.fpsframes++
+        
         //main game loop
+        this.pheromones.forEach(pheromone => {
+
+        })
 
         //pathfinding logic
         this.colonies.forEach(colony => {
             colony.bees.forEach(bee => {
-                if (bee.gender == 'drone') {
-                    //check for surrounding pheremones
-                    if (bee.getNearbyPheremones(this.pheremones).length > 0) {
-                        this.pheremones.forEach(pheremone => {
+                //create a list with all pheromones close to the bee
+                var nearby_pheremones = bee.getNearbyPheremones(this.pheromones)
+                if (bee.gender == 'worker') {
+                    if (nearby_pheremones.length > 0) {
+                        nearby_pheremones.forEach(pheremone => {
+
                             if (pheremone.type == 'alarm') {
                                 bee.target = pheremone
+                                return;
+                            }
+                        })
+                    }
+                }
+                if (bee.gender == 'drone') {
+                    //check for surrounding pheromones
+                    if (bee.getNearbyPheremones(this.pheromones).length > 0) {
+                        this.pheromones.forEach(pheremone => {
+                            if (pheremone.type == 'alarm') {
+                                bee.target = pheremone
+                                return;
                             }
                         })
                     }
                 }
                 //movement logic
                 try {
+                    console.log(bee.target)
                     var beeloc = bee.locAsObj();
-                    bee.angle -= 1
                     var dir = getDir(beeloc, bee.target, bee.angle)
                     if (dir == 'straight') {
                         return;
                     }
                     if (dir == 'left') {
-                        bee.angle -= 6
+                        bee.angle -= bee.turn_angle;
                     } else if (dir == 'right') {
-                        bee.angle += 6
+                        bee.angle += bee.turn_angle
                     }
-                }catch{
+                    move(bee, bee.speed)
+                    bee.target = null
+                } catch {
                     //move bee 5 steps forward
                     move(bee, bee.speed)
-
+                    bee.angle += minmax_randomInt(-10, 10)
+                    bee.target = null
                 }
             })
         })
