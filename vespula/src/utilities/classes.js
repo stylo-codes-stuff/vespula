@@ -1,14 +1,14 @@
 import { distance } from "./functions"
-import { minmax_randomInt } from "./random"
+import { minmax_randomInt, random_choice } from "./random"
 
 
 
 //class for pheremone data
 export class pheromone extends Phaser.GameObjects.Sprite {
-
-
+    
+    
     constructor(scene, x, y, time, type, visible = true) {
-
+        
         // Call the parent constructor
         super(scene, x, y, 'pmarker');
         //define custom props
@@ -28,7 +28,7 @@ export class pheromone extends Phaser.GameObjects.Sprite {
     kill(){
         this.destroy()
     }
-
+    
 }
 
 export class colony {
@@ -37,8 +37,8 @@ export class colony {
         this.bees = []
         this.average_hunger = null
         this.queen = queen
-
-
+        
+        
     }
     //enable the ability to drag and drop bees from the colony
     enable_drag_and_drop() {
@@ -72,11 +72,11 @@ export class colony {
 //so far so good!!!
 export class bee extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y, gender, smell_distance, sight_distance, nectar_limit, suck_time, speed, turn_angle) {
-
+        
         // Call the parent constructor
         super(scene, x, y, gender);
         //add custom properties
-
+        
         //predef props
         this.target = null;
         this.flowersVisited = [];
@@ -100,12 +100,12 @@ export class bee extends Phaser.GameObjects.Sprite {
                 gameObject.y = dragY;
             }
         });
-
+        
         // Add the sprite to the scene's display and update lists
         scene.add.existing(this);
-
+        
     }
-
+    
     locAsObj() {
         return { x: this.x, y: this.y }
     }
@@ -115,23 +115,32 @@ export class bee extends Phaser.GameObjects.Sprite {
             if (distance(this.locAsObj(), pheremone.locAsObj()) >= this.smell_distance) {
                 nearby_pheremones.push(pheremone);
             }
-
+            
         });
         return nearby_pheremones
     }
 }
 export class queen extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y, texture, colony, repro_req) {
-
+        
         super(scene, x, y, texture)
-
+        
         this.hygeine = 0;
         this.entourage = [];
         this.repro_req = repro_req;
-
+        
     }
 }
 export class flower extends Phaser.GameObjects.Sprite {
-
-    constructor(scene, x, y, texture) { }
-}
+    
+    constructor(scene, x, y, texture,color =null,max) {
+        var keys = ['whiteflower','blueflower','redflower']
+        if (color ==null){
+            super(scene,x,y,random_choice(keys))
+        } 
+        else{
+            
+            super(scene,x,y,texture)
+            
+        }   }
+    }

@@ -33,6 +33,8 @@ export class Preloader extends Scene
         this.registry.set('colonies',[])
         //preload images
         this.load.image('whiteflower','assets/whiteflower.png')
+        this.load.image('blueflower','assets/blueflower.png')
+        this.load.image('redflower','assets/redflower.png')
         this.load.image('bee','assets/bee.png')
         this.load.image('crown','assets/crown.png')
         this.load.image('honey','assets/honey.png')

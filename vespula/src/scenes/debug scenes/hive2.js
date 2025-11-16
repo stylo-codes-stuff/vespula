@@ -19,6 +19,7 @@ export class hive2 extends Scene {
         this.bees = [];
         this.pheromones = [];
         this.average_colony_hungers = {};
+        this.flowers = [];
         this.fpsframes = 0;
         this.elapsed = 0;
         this.fps = this.add.text(0, height - 50, 'FPS: 0')
@@ -59,7 +60,7 @@ export class hive2 extends Scene {
 
 
         //debugging for pheromones
-        var test_alarm = new pheromone(this, centerX, centerY, 1000, 'alarm')
+        var test_alarm = new pheromone(this, centerX, centerY, 5000, 'alarm')
         this.pheromones.push(test_alarm)
 
     }
@@ -135,7 +136,7 @@ export class hive2 extends Scene {
                 } catch {
                     //move bee 5 steps forward
                     move(bee, bee.speed)
-                    bee.angle += minmax_randomInt(-10, 10)
+                    bee.angle += minmax_randomInt(bee.turn_angle*-1, bee.turn_angle)
                     bee.target = null
                 }
             })
